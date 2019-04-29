@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Speed Typing Game</title>
+
+    <!--Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+
+    <!--Main Css Stylesheet-->
+    <link rel="stylesheet" href="./public/stylesheets/main.css">
+</head>
+<body class="main">
+    <main class="box">
+        <h1 class="box__header">Speed Typing Game</h1>
+        <section class="box__content">
+                <h1>Press Start To Begin</h1>
+                <section>
+                        <button class="box__start">Start</button>
+                        <button class="box__end trigger">How To Play</button>
+                        <section class="modal">
+                                <section class="modal-content">
+                                        <span class="close-button">&times</span>
+                                        <h1 class="modal__heading">How To Play</h1>
+                                        <p class="modal__para">Type as many  words as possible that are shown on the screen before the timer runs out and score as many points as possible. Each correct words are worth 1 point. For every 5 correct words the level increases</p>
+                                        <p class="modal__para">Your Highest score attempt will be saved on the browser</p>
+                                </section>
+                        </section>
+                </section>
+
+        </section>
+        <section class="game-content--hidden">
+                   <h1 class="game-content__text">Type the given word in <span class="game-content__timer"></span> seconds</h1>
+                   <h1 class="game-content__score"></h1>
+                   <h1 class="game-content__message"></h1>
+                   <input class ="game-content__input" type="text">
+                   <button class="game-content__stop">Stop</button>
+        </section>
+    </main>
+    <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+    </ul>
+
+    <script src="./dist/bundleMain.js"></script>
+</body>
+</html>

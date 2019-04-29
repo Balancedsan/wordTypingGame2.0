@@ -1,0 +1,148 @@
+@import  "../abstracts/mixins";
+@import "../vendors/animation";
+@import "../vendors/modal";
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+%button-layout{
+    width:15%;
+    font-weight: bolder;
+    cursor: pointer;
+    min-width: 125px;
+    max-width: 125px;
+    box-shadow: 0 8px 6px -6px black;
+    outline: none;
+    
+    &:active {
+        transform: translateY(2px);
+    }
+}
+
+%font-display{
+    font-size:2.5rem;
+    font-weight: bolder;
+}
+
+
+html {
+    height:100%;
+    font-size: 62.5%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.main {
+    height:100%;
+    background:#3498db;  
+    height:100vh;
+    background-size:cover;
+    background-position: center;
+    box-sizing:border-box;
+    @include flex-layout-middle(column);
+}
+
+
+
+.box {
+    width:70%;
+    height:70%;
+
+    background:rgba(255,255,255,0.2);
+    color:white;
+
+    &__header {
+        margin-top:5rem;
+        font-size:4rem;
+        text-align: center;
+
+        @include media-breakpoint(sm){
+            font-size: 5rem;
+        }
+    }
+
+    &__content {
+        font-size:1.5rem;
+        height:70%;
+        @include flex-layout-middle(column);
+        position: relative;
+
+    }
+
+
+
+
+    &__start {
+        position: relative;
+        z-index: 1;
+        @include setInputPos();
+        @extend %button-layout;
+        border:1px solid #ccffcc;
+        background:#CCFFCC;
+
+    }
+
+    &__end {
+        position: relative;
+        z-index: 1;
+        @extend %button-layout;
+        @include setInputPos();
+        background: lighten(#0099CC,15%);
+        border:#0099CC;
+        color:white;
+    }
+
+}
+
+.game-content {
+
+    &--hidden {
+        display:none;
+    }
+
+    &__timer,&__text,&__score {
+        @extend %font-display;
+    }
+
+    &__input {
+        position: relative;
+        z-index: 1;
+        @include setInputPos();
+        cursor: pointer;
+        text-align: center;
+        font-weight: bolder;
+        height:10%;
+        width:50%;
+        min-width: 200px;
+        max-width: 350px;
+        min-height: 30px;
+    }
+
+
+
+    &__stop {
+        position: relative;
+        z-index: 1;
+        @include setInputPos();
+        @extend %button-layout;
+        border:1px solid #ccffcc;
+        background:#CCFFCC;
+    }
+
+    &--reveal {
+        @include flex-layout-middle(column);
+    }
+
+}
+
+
+
+
+.timer {
+    &__heading {
+        @extend %font-display;
+    }
+}

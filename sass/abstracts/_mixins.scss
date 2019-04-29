@@ -1,0 +1,74 @@
+@mixin media-breakpoint($point) {
+  
+    $xs: "(min-width: 576px)";
+    $sm: "(min-width: 768px)";
+    $md: "(min-width: 992px)";
+    $lg: "(min-width:1200px)";
+
+    @if $point ==  xs {
+      @media #{$xs} { @content; }
+    }
+    @else if $point == sm {
+      @media #{$sm} { @content; }
+    }
+    @else if $point == md {
+      @media #{$md}  { @content; }
+    }
+    @else if $point == lg {
+      @media #{$lg}  { @content; }
+    }
+  
+  }
+
+
+@mixin flex-layout-middle($direction) {
+    display: flex;
+    flex-direction:$direction;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin setCirclePos(){
+
+  $circles : (
+    (25%,80px,80px,0s),
+    (10%,20px,20px,2s,12s),
+    (70%,20px,20px),
+    (40%,60px,60px,0s,18s),
+    (65%,20px,20px,0s),
+    (75%,110px,110px,3s),
+    (35%,150px,150px,7s),
+    (50%,25px ,25px ,15s,45s),
+    (20%,15px,15px,2s,35s),
+    (85%,150px,150px,0s,11s)
+  );
+
+  @for $index from 1 through length($circles){
+    &:nth-child(#{$index}){
+      @include circlePos(nth($circles, $index)...);
+    }
+  }
+
+}
+
+  @mixin circlePos($left,$width,$height,$delay:0s,$animation:25s) {
+    left: $left;
+    width:$width;
+    height:$height;
+    animation-delay: $delay;
+    animation-duration: $animation;
+  }
+
+    
+  @mixin setInputPos(){
+    padding:0.5rem;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    margin:2rem;
+  }
+
+
+
+
+
+
