@@ -42,19 +42,41 @@ const startTimer = async (element)=>{
 
 }
 
-
-
-const replaceStart =(mainContent,replaceElement)=>{
-        replaceElement.classList.add("game-content--reveal");
-        mainContent.textContent = "";
-        mainContent.appendChild(replaceElement);
-        return new Boolean(mainContent.textContent);
-}
-
 const createWords = (length)=>{
     return generateWords.generateCharacters(length);
 }
 
+
+
+const replaceStart =({mainContent,replaceElement})=>{
+        replaceElement.classList.add("game-content--reveal");
+        mainContent.textContent = "";
+        mainContent.appendChild(replaceElement);
+        return Boolean(mainContent.textContent); // return falsy value on message content to indicate start has been replaced
+}
+
+const startGame = ({currentWord,timeElement})=>{
+        currentWord.textContent= createWords(8);
+        startTimer(timeElement.textContent);
+}
+
+
+// const gameStatus = {
+//     wordInput: document.querySelector(".game-content__input"),
+//     currentWord:document.querySelector('.game-content__text'),
+//     stopButton: document.querySelector(".game-content__stop"),
+//     score: document.querySelector(".game-info__score"),
+//     message: document.querySelector(".game-content__message"),
+//     timeElement:document.querySelector(".game-content__timer")
+// }
+
+
+
+displayContent.start.addEventListener("click",()=>{
+       if(replaceStart(displayContent)){
+            startGame(gameStatus);
+       }
+});
 
 // const initializeGame = (currentWord,generator)=>{
 //     return (randomlength)=> {
@@ -67,8 +89,6 @@ const createWords = (length)=>{
 // const outputRandom = initializeGame(currentWord,generateWords);
 
 
-
-start.addEventListener("click",replaceStart.bind(null,mainContent,replaceElement));
 
 
 
