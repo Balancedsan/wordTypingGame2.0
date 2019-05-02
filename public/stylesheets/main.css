@@ -180,7 +180,7 @@
 }
 
 .timer__heading, .game-content__word, .game-content__timer, .game-content__text, .game-content__score, .game-content__score-count, .game-content__level {
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   font-weight: bolder;
   margin: 1rem 0;
 }
