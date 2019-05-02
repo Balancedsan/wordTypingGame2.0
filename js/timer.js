@@ -45,7 +45,13 @@ class TimerTracker{
      */
     clearTimer(){
       this._clear = true;
-      console.log(this._clear);
+    }
+
+    foceStop(){
+        this._time = 0;
+    }
+    timerReset(){
+        this._time = 500;
     }
 
 

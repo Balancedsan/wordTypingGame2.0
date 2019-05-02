@@ -8,7 +8,7 @@
                  localStorage.setItem(name,0);
         }
         return ()=>{
-            return getCurrentScore;
+            return localStorage.getItem(name);
         }
     }
 

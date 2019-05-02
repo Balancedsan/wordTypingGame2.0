@@ -26,6 +26,7 @@
 %font-display{
     font-size:2.5rem;
     font-weight: bolder;
+    margin:1rem 0;
 }
 
 
@@ -103,7 +104,7 @@ html {
         display:none;
     }
 
-    &__timer,&__text,&__score {
+    &__timer,&__text,&__score,&__score-count,&__level {
         @extend %font-display;
     }
 
@@ -121,9 +122,13 @@ html {
         min-height: 30px;
     }
 
+    &__word {
+     @extend %font-display;
+      font-size:3rem;
+    }
 
 
-    &__stop {
+    &__stop, &__reset {
         position: relative;
         z-index: 1;
         @include setInputPos();
@@ -136,6 +141,7 @@ html {
         @include flex-layout-middle(column);
     }
 
+  
 }
 
 

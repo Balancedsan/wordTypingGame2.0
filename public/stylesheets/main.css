@@ -166,7 +166,7 @@
   box-sizing: inherit;
 }
 
-.game-content__stop, .box__end, .box__start {
+.game-content__stop, .game-content__reset, .box__end, .box__start {
   width: 15%;
   font-weight: bolder;
   cursor: pointer;
@@ -175,13 +175,14 @@
   box-shadow: 0 8px 6px -6px black;
   outline: none;
 }
-.game-content__stop:active, .box__end:active, .box__start:active {
+.game-content__stop:active, .game-content__reset:active, .box__end:active, .box__start:active {
   transform: translateY(2px);
 }
 
-.timer__heading, .game-content__timer, .game-content__text, .game-content__score {
+.timer__heading, .game-content__word, .game-content__timer, .game-content__text, .game-content__score, .game-content__score-count, .game-content__level {
   font-size: 2.5rem;
   font-weight: bolder;
+  margin: 1rem 0;
 }
 
 html {
@@ -269,7 +270,10 @@ html {
   max-width: 350px;
   min-height: 30px;
 }
-.game-content__stop {
+.game-content__word {
+  font-size: 3rem;
+}
+.game-content__stop, .game-content__reset {
   position: relative;
   z-index: 1;
   padding: 0.5rem;

@@ -3,8 +3,8 @@ const path = require("path");
 
 
 module.exports = {
-  mode: 'production',
-  entry: "./js/main.js",
+  mode: 'development',
+  entry: ["./js/main.js"],
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundleMain.js"
@@ -20,6 +20,12 @@ module.exports = {
             presets: ["@babel/preset-env"]
           }
         }
+      },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: ["source-map-loader"],
+        enforce: "pre"
       }
     ]
   }

@@ -1,160 +1,192 @@
 import modalHandler from "./modal";
 import domCreate from "./domCreate";
-import {timer} from "./timer.js";
-import {generateWords} from "./words.js"
-
+import { timer } from "./timer.js";
+import { generateWords } from "./words.js"
+import { getCurrentBest, checkNewRecord } from "./setScore.js";
+import {tracker} from "./tracker.js";
 
 // selectors to replace elements on the dom page
+
+// const scoreTag = document.querySelector(".game-info__score");
 
 const displayContent = {
     start: document.querySelector(".box__start"),
     mainContent: document.querySelector(".box__content"),
-    replaceElement:document.querySelector(".game-content--hidden")
+    replaceElement: document.querySelector(".game-content--hidden")
 }
 
-// gameStatus used to keep track of the game current state
-
-const gameStatus = {
-    wordInput: document.querySelector(".game-content__input"),
-    currentWord:document.querySelector('.game-content__text'),
-    stopButton: document.querySelector(".game-content__stop"),
-    score: document.querySelector(".game-info__score"),
-    message: document.querySelector(".game-content__message"),
-    timeElement:document.querySelector(".game-content__timer")
+let wordTracking = {
+    currentWord: document.querySelector(".game-content__word"),
+    wordInput:document.querySelector(".game-content__input"),
+    message:document.querySelector(".game-content__message")
+    
 }
+// const timeElement = document.querySelector(".game-content__timer");
+const stopButton =  document.querySelector(".game-content__stop");
 
 
 
 
-
-
-const checkLevelIncrement = (score,multipler)=>{
-    return score % multiplier === 0;
-}
-
-const startTimer = async (element)=>{
-    const timeValue = timer.startCountDown(element);
-    if(timeValue > 1){
-        timer.startCountDown(element);
-    }else{
-        //TODO GAME OVER DISPLAYS MESSAGE TO THE USER
-    }
-
-}
-
-const createWords = (length)=>{
+const createCharacters = (length)=>{
     return generateWords.generateCharacters(length);
 }
 
 
 
-const replaceStart =({mainContent,replaceElement})=>{
-        replaceElement.classList.add("game-content--reveal");
-        mainContent.textContent = "";
-        mainContent.appendChild(replaceElement);
-        return Boolean(mainContent.textContent); // return falsy value on message content to indicate start has been replaced
+/**
+ * used to check if game should increase in level 
+ * @param {integer} score current score of the game 
+ * @param {*integer} multipler the multipler for the game state
+ */
+const checkLevelIncrement = (score, multipler) => {
+    return score % multipler === 0;
 }
 
-const startGame = ({currentWord,timeElement})=>{
-        currentWord.textContent= createWords(8);
-        startTimer(timeElement.textContent);
+const getCurrentRecord = ({score}) => {
+    return checkNewRecord(score) ? score : getCurrentBest();
 }
 
 
-// const gameStatus = {
-//     wordInput: document.querySelector(".game-content__input"),
-//     currentWord:document.querySelector('.game-content__text'),
-//     stopButton: document.querySelector(".game-content__stop"),
-//     score: document.querySelector(".game-info__score"),
-//     message: document.querySelector(".game-content__message"),
-//     timeElement:document.querySelector(".game-content__timer")
-// }
 
 
 
-displayContent.start.addEventListener("click",()=>{
-       if(replaceStart(displayContent)){
-            startGame(gameStatus);
-       }
+
+const stopGameState = (tracker,{currentWord,wordInput}) => {
+    tracker.resetTracker();
+    wordInput.readOnly = true;
+    currentWord.textContent = "";
+    return Boolean(!currentWord.textContent);
+}
+
+const writeEndMessage = (tracker,wordTracking)=>{
+    if(stopGameState(tracker,wordTracking)){
+        const highest =  getCurrentRecord(tracker);
+        wordTracking.message.textContent = `Game Over, your highest score is ${highest}`;
+        stopButton.textContent = "Play Again?";
+        tracker.gameStatus = false;
+        return true;
+    }
+    return false;
+}
+
+
+const resetGame = ()=>{
+    stopButton.textContent = "Stop";
+    tracker.gameStatus = true;
+    timer.timerReset();
+    wordTracking.message.textContent = " ";
+    wordTracking.wordInput.readOnly = false;
+    // wordTracking.wordInput = " ";
+    startGame(wordTracking,tracker);
+}
+
+const stopGame = ()=>{
+    timer.foceStop();
+    writeEndMessage(tracker,wordTracking);
+}
+
+const toggleButtons = ()=>{
+    tracker.gameStatus ? stopGame() : resetGame();
+}
+
+
+const addStopButton = ()=>{
+    stopButton.addEventListener("click",toggleButtons);
+}
+
+
+
+/**
+ * Used to start the timer for the game 
+ * @param {dom} element the element to show the timer
+ */
+const startTimer = (element) => {
+    timer.startCountDown(element)
+        .then((timeValue) => {
+            if (timeValue > 1) {
+                startTimer(element);
+            } else {
+               writeEndMessage(tracker,wordTracking);
+            }
+        })
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Used to replace the dom page to the game when start is being clicked
+ * @param {dom} mainContent the content to replace the element with
+ * @param {dom} replaceElement the element to replace the mainContent with 
+ */
+const replaceStart = ({ mainContent, replaceElement }) => {
+    replaceElement.classList.add("game-content--reveal");
+    mainContent.textContent = "";
+    mainContent.appendChild(replaceElement);
+    return Boolean(mainContent.textContent); // return falsy value on message content to indicate start has been replaced
+}
+
+/**
+ * Used to check if the words typed by the player matches the currentword shown
+ * @param {*} message the message content of the result  
+ * @param {*} wordInput the word typed by the user 
+ * @param {*} currentWord the current word displayed
+ */
+const checkForMatch = ({wordInput,currentWord,message}) => {
+    message.textContent = wordInput.value === currentWord.textContent ? "correct" : "";
+    return Boolean(message.textContent);
+}
+
+const shouldLevelIncrease = (currentWord,tracker)=>{
+     if(checkLevelIncrement(tracker.score,5)){
+         tracker.baseCount+=1;
+         currentWord.textContent = createCharacters(tracker.baseCount);
+         tracker.incrementLevel();
+     }{
+        currentWord.textContent = createCharacters(tracker.baseCount);
+     }
+}
+
+const continueNextStage = ({wordInput,currentWord},tracker)=> {
+    timer.clearTimer();
+    wordInput.value = "";
+    tracker.incrementScore();
+    shouldLevelIncrease(currentWord,tracker);
+}
+
+
+
+
+const listenKeyInput = (wordTracking,tracker)=>{
+    wordTracking.wordInput.addEventListener("input",()=>{
+        if(checkForMatch(wordTracking)){
+            continueNextStage(wordTracking,tracker);
+        }
+    })
+
+}
+
+
+
+const startGame = (wordTracking,tracker)=>{
+    wordTracking.currentWord.textContent = createCharacters(tracker.baseCount);
+    startTimer(document.querySelector(".game-content__timer"));
+    tracker.initializeTracker();
+    wordTracking.wordInput.focus();
+    listenKeyInput(wordTracking,tracker);
+}
+
+
+
+displayContent.start.addEventListener("click", () => {
+    if (replaceStart(displayContent)) { // if the content has sucessfully replaced when the start button is clicked
+        startGame(wordTracking,tracker);
+        addStopButton();
+    }
 });
 
-// const initializeGame = (currentWord,generator)=>{
-//     return (randomlength)=> {
-//        currentWord.textContent =  generator.generateCharacters(randomlength);
-//        return Boolean(currentWord.textContent);
-//     }
-// }
-
-// // used for generating random words onto the screen
-// const outputRandom = initializeGame(currentWord,generateWords);
-
-
-
-
-
-//     // start.addEventListener("click",()=>{
-//     //     mainContent.innerHTML = "";
-//     //     mainContent.appendChild(newElement);
-//     //     const time = timer.countDownTimer(200,newElement,"Game will start in");
-
-//     //     time.then(()=>{
-//     //         replaceElement.classList.add("game-content--reveal");
-//     //         mainContent.innerHTML ="";
-//     //         const timerGame = timer.countDownTimer(500,newElement,"type the following words in")
-//     //         mainContent.appendChild(replaceElement);
-//     //     })
-
-
-
-    //         /**
-    //  * Generates words for the user to type and display it on the screen
-    //  * 
-    //  * @param length the length of word to be generated
-    //  * @param element the element to generate the newWord to
-    //  */
-    // const showWords = ((length,element)=>{
-    //     const newWord = wordGenerator.generateWords(length);
-    //     return newWord;
-    // })
-    // /**
-    //  * Checks if the current character on the screen matches the current character on the screen
-    //  * 
-    //  */
-    // const matchWords =((message,wordInput,currentWord)=> {
-    //     message.textContent = wordInput.value === currentWord.textContent ? "correct" : "";  
-    //     return Boolean(message.textContent); // change output to falsy value to check if the word matches
-    // })
-
-
-// const mainFunc = ((domCreate)=>{
-
-//     const start = document.querySelector(".box__start");
-//     const mainContent = document.querySelector(".box__content");
-//     const newElement = domCreate.createElement("h1","","timer__heading");
-//     const replaceElement = document.querySelector(".game-content--hidden");
-
-
-
-
-
-
-//     // start.addEventListener("click",()=>{
-//     //     mainContent.innerHTML = "";
-//     //     mainContent.appendChild(newElement);
-//     //     const time = timer.countDownTimer(200,newElement,"Game will start in");
-
-//     //     time.then(()=>{
-//     //         replaceElement.classList.add("game-content--reveal");
-//     //         mainContent.innerHTML ="";
-//     //         const timerGame = timer.countDownTimer(500,newElement,"type the following words in")
-//     //         mainContent.appendChild(replaceElement);
-//     //     })
-
-   
-
-
-//     // })
-
-
-
-// })(domCreate);
