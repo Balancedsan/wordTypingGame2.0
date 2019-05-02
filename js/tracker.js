@@ -1,7 +1,7 @@
 export const tracker = {
     score: 0,
     level: 1,
-    baseCount:1, 
+    baseCount:5, 
     gameStatus:true,
     currentLevel:document.querySelector(".game-content__level"),
     scoreCount:document.querySelector(".game-content__score-count"),
