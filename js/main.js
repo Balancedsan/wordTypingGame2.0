@@ -51,7 +51,6 @@ const getCurrentRecord = ({score}) => {
 
 
 const stopGameState = (tracker,{currentWord,wordInput}) => {
-    tracker.resetTracker();
     wordInput.readOnly = true;
     currentWord.textContent = "";
     return Boolean(!currentWord.textContent);
@@ -62,6 +61,7 @@ const writeEndMessage = (tracker,wordTracking)=>{
         const highest =  getCurrentRecord(tracker);
         wordTracking.message.textContent = `Game Over, your highest score is ${highest}`;
         stopButton.textContent = "Play Again?";
+        tracker.resetTracker();
         tracker.gameStatus = false;
         return true;
     }
