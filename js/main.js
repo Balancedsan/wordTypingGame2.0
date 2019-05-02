@@ -1,5 +1,4 @@
 import modalHandler from "./modal";
-import domCreate from "./domCreate";
 import { timer } from "./timer.js";
 import { generateWords } from "./words.js"
 import { getCurrentBest, checkNewRecord } from "./setScore.js";
