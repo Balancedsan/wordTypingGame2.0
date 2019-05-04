@@ -180,9 +180,8 @@
 }
 
 .timer__heading, .game-content__word, .game-content__timer, .game-content__text, .game-content__score, .game-content__score-count, .game-content__level {
-  font-size: 3.5rem;
-  font-weight: bolder;
-  margin: 1rem 0;
+  font-size: 2rem;
+  margin: 0.5rem 0;
 }
 
 html {
@@ -202,6 +201,21 @@ html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.initial {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+@media (min-width: 992px) {
+  .initial {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .box {
@@ -254,6 +268,16 @@ html {
 .game-content--hidden {
   display: none;
 }
+.game-content__text {
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .game-content__timer, .game-content__text, .game-content__score, .game-content__score-count, .game-content__level {
+    font-size: 3.5rem;
+    font-weight: bolder;
+    margin: 1rem 0;
+  }
+}
 .game-content__input {
   position: relative;
   z-index: 1;
@@ -270,8 +294,12 @@ html {
   max-width: 350px;
   min-height: 30px;
 }
-.game-content__word {
-  font-size: 3rem;
+@media (min-width: 768px) {
+  .game-content__word {
+    font-size: 3rem;
+    font-weight: bolder;
+    margin: 1rem 0;
+  }
 }
 .game-content__stop, .game-content__reset {
   position: relative;
@@ -288,6 +316,14 @@ html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+@media (min-width: 768px) {
+  .timer__heading {
+    font-size: 3.5rem;
+    font-weight: bolder;
+    margin: 1rem 0;
+  }
 }
 
 /*# sourceMappingURL=main.css.map */

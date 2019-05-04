@@ -22,6 +22,10 @@
         transform: translateY(2px);
     }
 }
+%font-display-mobile{
+    font-size:2rem;
+    margin:0.5rem 0;
+}
 
 %font-display{
     font-size:3.5rem;
@@ -44,6 +48,14 @@ html {
     background-position: center;
     box-sizing:border-box;
     @include flex-layout-middle(column);
+}
+
+.initial{
+    @include flex-layout-middle(column);
+
+    @include media-breakpoint(md){
+        @include flex-layout-middle(row);
+    }
 }
 
 
@@ -104,8 +116,17 @@ html {
         display:none;
     }
 
+    &__text{
+        text-align: center;
+    }
+
     &__timer,&__text,&__score,&__score-count,&__level {
-        @extend %font-display;
+        @extend %font-display-mobile;
+        @include media-breakpoint(sm){
+            font-size:3.5rem;
+            font-weight: bolder;
+            margin:1rem 0;
+        }
     }
 
     &__input {
@@ -123,8 +144,12 @@ html {
     }
 
     &__word {
-     @extend %font-display;
-      font-size:3rem;
+        @extend %font-display-mobile;
+        @include media-breakpoint(sm){
+            font-size:3.0rem;
+            font-weight: bolder;
+            margin:1rem 0;
+        }
     }
 
 
@@ -149,6 +174,11 @@ html {
 
 .timer {
     &__heading {
-        @extend %font-display;
+        @extend %font-display-mobile;
+        @include media-breakpoint(sm){
+            font-size:3.5rem;
+            font-weight: bolder;
+            margin:1rem 0;
+        }
     }
 }
