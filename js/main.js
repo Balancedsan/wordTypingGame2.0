@@ -53,6 +53,7 @@ const getCurrentRecord = ({score}) => {
 const stopGameState = ({currentWord,wordInput}) => {
     wordInput.readOnly = true;
     currentWord.textContent = "";
+    wordInput.value = "";
     return Boolean(!currentWord.textContent);
 }
 
@@ -73,9 +74,8 @@ const resetGame = ()=>{
     stopButton.textContent = "Stop";
     tracker.gameStatus = true;
     timer.timerReset();
-    wordTracking.message.textContent = " ";
-    wordTracking.wordInput.readOnly = false;
-    // wordTracking.wordInput = " ";
+    wordTracking.message.textContent = "";
+    wordTracking.wordInput.value = "";
     startGame(wordTracking,tracker);
 }
 
@@ -173,6 +173,7 @@ const listenKeyInput = (wordTracking,tracker)=>{
 
 
 const startGame = (wordTracking,tracker)=>{
+    wordTracking.wordInput.readOnly = false;
     wordTracking.currentWord.textContent = createCharacters(tracker.baseCount);
     startTimer(document.querySelector(".game-content__timer"));
     tracker.initializeTracker();
