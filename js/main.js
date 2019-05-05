@@ -174,6 +174,7 @@ const listenKeyInput = (wordTracking,tracker)=>{
 
 const startGame = (wordTracking,tracker)=>{
     wordTracking.wordInput.readOnly = false;
+    tracker.baseCount = 5;
     wordTracking.currentWord.textContent = createCharacters(tracker.baseCount);
     startTimer(document.querySelector(".game-content__timer"));
     tracker.initializeTracker();
